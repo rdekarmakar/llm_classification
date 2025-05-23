@@ -1,4 +1,5 @@
 import csv
+from text_normalize import normalize_text1,normalize_text2
 
 # Load sample data (a restaurant menu of items)
 with open('customer_insurance_policies.csv') as file:
@@ -19,8 +20,9 @@ with open('customer_insurance_policies.csv') as file:
         if i==0:
             # Skip the first row (the column headers)
             continue
-
-        documents.append(line[1])
+        doc = normalize_text2(line[1])
+        print(doc)
+        documents.append(doc)
         metadatas.append({"customer_id": line[0]})
         ids.append(str(id))
         id+=1
@@ -41,7 +43,7 @@ chroma_client = chromadb.PersistentClient(path="my_vectordb")
 sentence_transformer_ef = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="all-mpnet-base-v2")
 
 # Use this to delete the database
-# chroma_client.delete_collection(name="customer_policies")
+chroma_client.delete_collection(name="customer_policies")
 
 # Create the collection, aka vector database. Or, if database already exist, then use it. Specify the model that we want to use to do the embedding.
 collection = chroma_client.get_or_create_collection(name="customer_policies", embedding_function=sentence_transformer_ef)
