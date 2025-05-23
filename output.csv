@@ -1,0 +1,111 @@
+source,log_message,target_label
+1,"Customer1 : I visited the hospital on April 5th for an emergency and was told my insurance was inactive.
+This is shocking because Ive been paying my premiums on time every month.
+Now Im being billed $2,300 out of pocket. I need this resolved ASAP  please confirm my coverage status and correct the hospital records.","{
+  ""category"": ""claim_denial"",
+  ""urgency"": ""high"",
+  ""sentiment"": ""angry"",
+  ""confidence"": 0.95,
+  ""key_information"": [
+    ""Hospital visit on April 5th"",
+    ""Insurance status: inactive"",
+    ""Out-of-pocket bill: $2,300"",
+    ""Policy Number: HI-123456789"",
+    ""Policyholder Name: John Doe"",
+    ""Plan Name: SafeCare Gold Plan""
+  ],
+  ""suggested_action"": ""Verify policy status and investigate the claim denial.""
+}"
+2,"Customer2: My claim for a knee MRI done on March 20th was denied stating it wasn't medically necessary.
+However, it was prescribed by my orthopedic specialist. I need a detailed explanation for the denial and how I can appeal this decision.","{
+  ""category"": ""claim_denial"",
+  ""urgency"": ""medium"",
+  ""sentiment"": ""neutral"",
+  ""confidence"": 0.95,
+  ""key_information"": [
+    ""knee MRI claim denied"",
+    ""Date of procedure: March 20th"",
+    ""Prescribed by orthopedic specialist"",
+    ""Policy Number: HI-123456789""
+  ],
+  ""suggested_action"": ""Review the claim details, verify medical necessity criteria, and provide a detailed explanation for denial along with appeal process information.""
+}"
+3,"Customer3 : I was charged twice for the same doctor visit on February 10th. The bill shows two identical charges, but I only had one appointment.
+Please correct this billing error and refund the duplicate charge immediately.","{
+  ""category"": ""billing_issue"",
+  ""urgency"": ""high"",
+  ""sentiment"": ""frustrated"",
+  ""confidence"": 0.9,
+  ""key_information"": [
+    ""Date of the visit: February 10th"",
+    ""Two identical charges for one appointment""
+  ],
+  ""suggested_action"": ""Investigate the duplicate charge immediately and process a refund if applicable.""
+}"
+4,"Customer4:I'm planning to have a minor outpatient surgery next month and need to confirm if it's covered under my current plan.
+Can you please send me details of what's included in my benefits and any pre-authorization requirements?","{
+  ""category"": ""coverage_inquiry"",
+  ""urgency"": ""medium"",
+  ""sentiment"": ""neutral"",
+  ""confidence"": 0.95,
+  ""key_information"": [
+    ""Customer Name: John Doe"",
+    ""Policy Number: HI-123456789"",
+    ""Plan Name: SafeCare Gold Plan"",
+    ""Type of Coverage: Individual"",
+    ""Sum Insured: $100,000 per year"",
+    ""Minor outpatient surgery next month""
+  ],
+  ""suggested_action"": ""Review policy details and confirm coverage for the specific procedure. Check if pre-authorization is required for the outpatient surgery.""
+}"
+5,"Customer5: I added my newborn to my policy in January, but the pediatricians office says theres no record of coverage.
+Ive submitted the documents twice already. Can someone please verify the status and ensure my child is covered?","{
+  ""category"": ""dependent_coverage_issue"",
+  ""urgency"": ""high"",
+  ""sentiment"": ""frustrated"",
+  ""confidence"": 0.95,
+  ""key_information"": [
+    ""Policy Number: HI-123456789"",
+    ""Newborn added to policy in January"",
+    ""Documents submitted twice""
+  ],
+  ""suggested_action"": ""Verify the status of the dependent coverage and ensure the child is covered under the policy.""
+}"
+6,"Customer6 : Hi Team,
+
+I wanted to check if I'm eligible for the free annual health check-up mentioned in the policy.
+
+Could you please let me know how to book it and if theres a specific hospital or clinic I need to visit?
+
+Thanks in advance for your help!
+
+Best,
+John Doe","{
+  ""category"": ""coverage_inquiry"",
+  ""urgency"": ""low"",
+  ""sentiment"": ""neutral"",
+  ""confidence"": 0.95,
+  ""key_information"": [
+    ""Policy Number: HI-123456789"",
+    ""Plan Name: SafeCare Gold Plan"",
+    ""Inquiry about free annual health check-up eligibility and booking process""
+  ],
+  ""suggested_action"": ""Verify eligibility for the annual health check-up and provide instructions on how to book it, including any specific network requirements.""
+}"
+6,"Customer6: Hi Team,
+I have not received any response to my previous email regarding the free annual health check-up mentioned in the policy.
+I am really pissed off with the lack of communication from your side.
+Can someone please get back to me with the details asap.
+
+Thanks,
+John Doe","{
+  ""category"": ""coverage_inquiry"",
+  ""urgency"": ""medium"",
+  ""sentiment"": ""angry"",
+  ""confidence"": 0.95,
+  ""key_information"": [
+    ""Policy Number: HI-123456789"",
+    ""Free annual health check-up inquiry""
+  ],
+  ""suggested_action"": ""Respond with details on how to access the free annual health check-up and apologize for the delay in response.""
+}"

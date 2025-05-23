@@ -1,0 +1,25 @@
+{
+  "category": "account_access",
+  "urgency": "high",
+  "sentiment": "frustrated",
+  "confidence": 0.95,
+  "key_information": [
+    "Customer tried resetting password but didn't receive reset email",
+    "Customer has several pending orders"
+  ],
+  "suggested_action": "Check email delivery and assist with account access"
+}
+
+
+{
+  "category": "claim_denial",
+  "urgency": "high",
+  "sentiment": "upset",
+  "confidence": 0.93,
+  "key_information": [
+    "Customer's MRI claim was denied as not medically necessary",
+    "MRI was prescribed by a specialist",
+    "Customer is seeking an explanation and appeal options"
+  ],
+  "suggested_action": "Review claim details, validate medical necessity documentation, and guide customer through the appeal process"
+}
