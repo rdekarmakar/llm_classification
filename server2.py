@@ -18,7 +18,14 @@ async def classify_logs(file: UploadFile):
             raise HTTPException(status_code=400, detail="CSV must contain 'source' and 'log_message' columns.")
 
         # Perform classification
-        df["target_label"] = classify(list(zip(df["channel"], df["message_content"])))
+        logs = list(zip(df["channel"], df["message_content"]))
+        labels, routing_info, processing_costs, chroma_ids = classify(logs)
+
+        # Append results
+        df["target_label"] = labels
+        df["routing_info"] = routing_info
+        df["processing_cost"] = processing_costs
+        df["chroma_vector_id"] = chroma_ids
 
         print("Dataframe:",df.to_dict())
 
