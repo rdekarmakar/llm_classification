@@ -21,7 +21,8 @@ with open('customer_interactions.csv') as file:
             # Skip the first row (the column headers)
             continue
         # Normalize the text
-        doc = normalize_text2(line[1])
+        # doc = normalize_text2(line[1])
+        doc = line[1]
         print(doc)
         documents.append(doc)
         metadatas.append({"customer_id": line[0]})
@@ -44,7 +45,7 @@ chroma_client = chromadb.PersistentClient(path="my_vectordb")
 sentence_transformer_ef = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="all-mpnet-base-v2")
 
 # Use this to delete the database
-# chroma_client.delete_collection(name="customer_interaction")
+chroma_client.delete_collection(name="customer_interaction")
 
 # Create the collection, aka vector database. Or, if database already exist, then use it. Specify the model that we want to use to do the embedding.
 collection = chroma_client.get_or_create_collection(name="customer_interaction", embedding_function=sentence_transformer_ef)
@@ -58,7 +59,7 @@ collection.add(
 
 
 results = collection.query(
-        query_texts=[" free annual health check"],
+        query_texts=[" claim for accidental hospitalization"],
         n_results=1  # Retrieve top 3 relevant results
     )
 print(results['documents'])

@@ -9,8 +9,6 @@ from enum import Enum
 from typing import List
 from dotenv import load_dotenv
 import chromadb
-import tiktoken
-
 
 # Initialize ChromaDB client
 from chromadb.config import Settings
@@ -19,42 +17,6 @@ chroma_client = chromadb.PersistentClient(path="my_vectordb")
 
 collection_customer_interaction = chroma_client.get_or_create_collection(name="customer_interaction")
 collection_customer_policies = chroma_client.get_or_create_collection(name="customer_policies")
-
-# Sample customer support tickets
-ticket1 = """
-I ordered a laptop from your store last week (Order #12345), but I received a tablet instead. 
-This is unacceptable! I need the laptop for work urgently. Please resolve this immediately or I'll have to dispute the charge.
-"""
-
-ticket2 = """
-I visited the hospital on April 5th for an emergency and was told my insurance was inactive.
-This is shocking because I’ve been paying my premiums on time every month.
-Now I’m being billed $2,300 out of pocket. I need this resolved ASAP — please confirm my coverage status and correct the hospital records.
-"""
-
-# Claim Denial
-ticket3 = """
-My claim for a knee MRI done on March 20th was denied stating it wasn't medically necessary.
-However, it was prescribed by my orthopedic specialist. I need a detailed explanation for the denial and how I can appeal this decision.
-"""
-
-# Billing Error
-ticket4 = """
-I was charged twice for the same doctor visit on February 10th. The bill shows two identical charges, but I only had one appointment.
-Please correct this billing error and refund the duplicate charge immediately.
-"""
-
-# Coverage Inquiry
-ticket5 = """
-I'm planning to have a minor outpatient surgery next month and need to confirm if it's covered under my current plan.
-Can you please send me details of what's included in my benefits and any pre-authorization requirements?
-"""
-
-# Dependent Coverage Issue
-ticket6 = """
-I added my newborn to my policy in January, but the pediatrician’s office says there’s no record of coverage.
-I’ve submitted the documents twice already. Can someone please verify the status and ensure my child is covered?
-"""
 
 
 # Dependent Coverage Issue
@@ -196,22 +158,6 @@ Analyze the following customer support requests and provide the requested inform
 As additional context, you can use the customer interaction history and customer policies.
 """
 
-def count_tokens(text, model="gpt-3.5-turbo"):
-    """
-    Count the number of tokens in a given text for a specific model.
-
-    Args:
-        text (str): The input text to tokenize.
-        model (str): The model name (default is "gpt-3.5-turbo").
-
-    Returns:
-        int: The number of tokens in the text.
-    """
-    # Load the tokenizer for the specified model
-    encoding = tiktoken.encoding_for_model(model)
-    # Encode the text and count the tokens
-    return len(encoding.encode(text))
-
 
 def classify_ticket(ticket_text: str) -> TicketClassification:
     # Query ChromaDB for additional context
@@ -235,9 +181,6 @@ def classify_ticket(ticket_text: str) -> TicketClassification:
 
     # Combine ticket text with additional context
     combined_input = f"{ticket_text}\n\nAdditional Context:\n{additional_context}"
-
-    combined_input_tokens = count_tokens(combined_input)
-    print(f"Additional Context Tokens: {combined_input_tokens} and cost: {combined_input_tokens * 0.15 / 1000000:.6f} $")
 
     # Pass combined input to the classification model
     response = client.chat.completions.create(
@@ -272,25 +215,6 @@ result7 = classify_ticket(ticket7)
 # print(result6.model_dump_json(indent=2))
 print(result7.model_dump_json(indent=2))
 # print(result8.model_dump_json(indent=2))
-
-
-# --------------------------------------------------------------
-#Token Count and Cost Calculation
-# --------------------------------------------------------------
-
-input_tokens = count_tokens(ticket7)
-system_prompt_tokens = count_tokens(SYSTEM_PROMPT)
-
-result7_str = result7.model_dump_json(indent=2)
-# print(result7_str)
-output_tokens = count_tokens(result7_str)
-
-print(f"Input Tokens: {input_tokens} and cost: {input_tokens * 0.15 / 1000000:.6f} $")
-print(f"System Prompt Tokens: {system_prompt_tokens} and cost: {system_prompt_tokens * 0.15 / 1000000:.6f} $")
-
-print(f"Output Tokens: {output_tokens} and cost: {output_tokens * 0.60 / 1000000:.6f} $")
-
-
 
 # if __name__ == "__main__":
 #     print(classify_ticket(

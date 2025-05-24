@@ -1,69 +1,64 @@
 import csv
-from text_normalize import normalize_text1,normalize_text2
-
-# Load sample data (a restaurant menu of items)
-with open('customer_insurance_policies.csv') as file:
-    lines = csv.reader(file)
-
-    # Store the name of the menu items in this array. In Chroma, a "document" is a string i.e. name, sentence, paragraph, etc.
-    documents = []
-
-    # Store the corresponding menu item IDs in this array.
-    metadatas = []
-
-    # Each "document" needs a unique ID. This is like the primary key of a relational database. We'll start at 1 and increment from there.
-    ids = []
-    id = 1
-
-    # Loop thru each line and populate the 3 arrays.
-    for i, line in enumerate(lines):
-        if i==0:
-            # Skip the first row (the column headers)
-            continue
-        doc = normalize_text2(line[1])
-        print(doc)
-        documents.append(doc)
-        metadatas.append({"customer_id": line[0]})
-        ids.append(str(id))
-        id+=1
-
-
+from text_normalize import normalize_text1, normalize_text2
 import chromadb
 from chromadb.utils import embedding_functions
 
-# Instantiate chromadb instance. Data is stored in memory only.
-# chroma_client = chromadb.Client()
+# Load data from the CSV file
+with open('customer_insurance_policies.csv') as file:
+    reader = csv.reader(file)
 
-# Instantiate chromadb instance. Data is stored on disk (a folder named 'my_vectordb' will be created in the same folder as this file).
+    # Skip header
+    next(reader)
+
+    documents = []
+    metadatas = []
+    ids = []
+
+    id = 1
+    for line in reader:
+        customer_id = line[0]
+        cust_name = normalize_text1(line[1])
+        policy_text = normalize_text2(line[2])
+
+        # You can combine customer name and policy text as the document if desired
+        doc = f"{cust_name}. {policy_text}"
+
+        documents.append(doc)
+        metadatas.append({"customer_id": customer_id, "cust_name": cust_name})
+        ids.append(str(id))
+        id += 1
+
+# Set up ChromaDB with persistent storage
 chroma_client = chromadb.PersistentClient(path="my_vectordb")
 
-
-# Select the embedding model to use.
-# List of model names can be found here https://www.sbert.net/docs/pretrained_models.html
-sentence_transformer_ef = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="all-mpnet-base-v2")
-
-# Use this to delete the database
+# Optional: Delete the existing collection if needed
 chroma_client.delete_collection(name="customer_policies")
 
-# Create the collection, aka vector database. Or, if database already exist, then use it. Specify the model that we want to use to do the embedding.
-collection = chroma_client.get_or_create_collection(name="customer_policies", embedding_function=sentence_transformer_ef)
+# Initialize embedding function
+sentence_transformer_ef = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="all-mpnet-base-v2")
 
+# Create or get the vector collection
+collection = chroma_client.get_or_create_collection(
+    name="customer_policies",
+    embedding_function=sentence_transformer_ef
+)
 
-# Add all the data to the vector database. ChromaDB automatically converts and stores the text as vector embeddings. This may take a few minutes.
+# Add documents to the collection
 collection.add(
     documents=documents,
     metadatas=metadatas,
     ids=ids
 )
 
-
+# Query the collection
 results = collection.query(
-        query_texts=[" John Doe"],
-        n_results=1  # Retrieve top 3 relevant results
-    )
-print(results['documents'])
-# additional_context = " ".join([doc for doc in results["documents"]])
+    query_texts=["What is the date of issue for personal accident policy?"],
+    n_results=1
+)
 
-# Flatten the nested list and join the elements
+# Print the most relevant document
+print(results['documents'])
+
+# Flatten and join for additional context
 additional_context = " ".join([doc for sublist in results["documents"] for doc in sublist])
 print(additional_context)
