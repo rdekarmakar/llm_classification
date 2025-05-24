@@ -82,7 +82,7 @@ Your tasks:
 Remember:
 - Be objective and base your analysis solely on the information provided in the ticket.
 - If you're unsure about any aspect, reflect that in your confidence score.
-- For 'key_information', extract specific details like order numbers, product names,account issues or brief from previous customer interactions.
+- For 'key_information', extract specific details like Policy numbers, product names,current issues or brief from previous customer interactions.
 - The 'suggested_action' should be a brief, actionable step for our support team.
 Analyze the following customer support requests and provide the requested information in the specified format.
 As additional context, you can use the customer interaction history and customer policies.
