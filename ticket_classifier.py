@@ -1,5 +1,11 @@
 # ticket_classifier.py
 
+"""
+This code defines a structured data model for classifying customer support tickets using Pydantic and Python's Enum class. 
+It specifies categories, urgency levels, customer sentiments, and other relevant information as predefined options or constrained fields. 
+This structure ensures data consistency, enables automatic validation, and facilitates easy integration with AI models and other parts of a support ticket system.
+"""
+
 from typing import List
 import tiktoken
 from pydantic import BaseModel, Field
