@@ -1,12 +1,27 @@
+"""
+Message routing based on classification results.
+"""
+
 import json
+import logging
+from models import TicketCategory
+
+logger = logging.getLogger(__name__)
+
 
 class MessageRouter:
+    """Routes classified messages to appropriate teams based on category and urgency."""
+    
     CATEGORY_ROUTING = {
-        "coverage_inquiry": "Product Support Team",
-        "claim_status": "Claims Department",
-        "billing_issue": "Billing Team",
-        "technical_issue": "IT Support",
-        "general_question": "Customer Service",
+        TicketCategory.COVERAGE_INQUIRY.value: "Product Support Team",
+        TicketCategory.CLAIM_DENIAL.value: "Claims Department",
+        "claim_status": "Claims Department",  # Legacy support
+        TicketCategory.BILLING_ISSUE.value: "Billing Team",
+        TicketCategory.DEPENDENT_COVERAGE_ISSUE.value: "IT Support",
+        "technical_issue": "IT Support",  # Legacy support
+        TicketCategory.ACCOUNT_ACCESS.value: "Account Management Team",
+        TicketCategory.OTHER.value: "Customer Service",
+        "general_question": "Customer Service",  # Legacy support
     }
 
     URGENCY_ESCALATION = {
@@ -21,10 +36,11 @@ class MessageRouter:
         self.message = self._parse_json(raw_message)
 
     def _parse_json(self, raw_message: str) -> dict:
+        """Parse JSON message string."""
         try:
             return json.loads(raw_message)
         except json.JSONDecodeError as e:
-            print("❌ Invalid JSON:", e)
+            logger.error(f"Invalid JSON in message router: {e}")
             return {}
 
     def route(self) -> dict:
